@@ -21,7 +21,8 @@
         </div>
 
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            {% if perms.yto_cmdb %}
+                <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         机房
@@ -34,7 +35,7 @@
 
                     </ul>
                 </li>
-                 <li class="dropdown">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         物理机
                         <b class="caret"></b>
@@ -44,7 +45,7 @@
                         <li><a href="{% url 'yto_cmdb:container_items' %}">容器管理</a></li>
                     </ul>
                 </li>
-                 <li class="dropdown">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         虚拟机
                         <b class="caret"></b>
@@ -63,6 +64,7 @@
                         <li><a href="http://10.1.194.64/zabbix/" target="_blank">Zabbix</a></li>
                     </ul>
                 </li>
+            {% endif %}
             </ul>
             {#            <ul class="nav navbar-nav navbar-right">#}
             <ul class="nav navbar-nav navbar-right ">
@@ -94,11 +96,15 @@
     <div>
         {% block content %}{% endblock content %}
     </div>
-    <div class="footer" align="center">
-        2017 数据中心<br>
-        版权木有，侵权不究！
-    </div>
-</div> <!-- /container -->
-</body>
+</div>
 
+<div id="footer" class="container">
+    <nav class="navbar navbar-fixed-bottom">
+        <p class="text-muted credit" align="center">
+            2017 数据中心<br>
+            版权木有，侵权不究！
+        </p>
+    </nav>
+</div>
+</body>
 </html>

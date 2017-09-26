@@ -48,7 +48,7 @@
                             class="glyphicon glyphicon-edit"></span>修改</a>&nbsp;
 {#                    <td style="text-align:center"><a href="{% url 'yto_cmdb:idc_delete' topic.id %}"><span#}
 {#                            class="glyphicon glyphicon-remove"></span></a></td>#}
-                <a href="javascript:if(confirm('确实要删除吗?'))location= '{% url "yto_cmdb:idc_delete" topic.id %}'"><span
+                <a href="javascript:if(confirm('删除本条目会自动删除与其相关联的所有记录，确实要删除吗?'))location= '{% url "yto_cmdb:idc_delete" topic.id %}'"><span
                             class="glyphicon glyphicon-remove"></span>删除</a></td>
                 </tr>
             {% endfor %}
@@ -76,7 +76,7 @@
 
             {% if topics.number %}
                 <li><span aria-hidden="true">{{ topics.number }}/{{ topics.paginator.num_pages }}</span></li>
-                {#            <li><span aria-hidden="true">{{ nums }}条记录</span></li>#}
+                <li><span aria-hidden="true">共{{ nums }}条</span></li>
             {% endif %}
 
 
