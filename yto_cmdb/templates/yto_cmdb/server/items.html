@@ -1,0 +1,134 @@
+{% extends "yto_cmdb/base.html" %}
+{% load bootstrap3 %}
+
+{% block header %}
+    <h3>设备清单</h3>
+    <style type="text/css">
+        td {
+            white-space: nowrap;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+
+    <form method="get" action="{% url 'yto_cmdb:server_search' %}" class="form-inline">
+        {#        {% csrf_token %}#}
+        <div class="form-group">
+            <input value="新增设备" type="button" class="btn btn-primary"
+                   onclick="location.href='{% url "yto_cmdb:server_new" %}'"/>
+        </div>
+        <div class="form-group-sm" style="float: right">
+            <input type="text" name="keyword" class="form-control" placeholder="搜索" required>
+        </div>
+
+
+    </form>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-responsive">
+            <tr>
+                <td style="text-align:center" class="td-nobr">ID</td>
+                <td style="text-align:center">机柜</td>
+                <td style="text-align:center">位置</td>
+                <td style="text-align:center">型号</td>
+                <td style="text-align:center">厂商</td>
+                <td style="text-align:center">序列号</td>
+                <td style="text-align:center">IP地址</td>
+                <td style="text-align:center">用户名</td>
+                <td style="text-align:center">密码</td>
+                <td style="text-align:center">应用</td>
+                <td style="text-align:center">负责人</td>
+                <td style="text-align:center">管理IP</td>
+                <td style="text-align:center">管理用户</td>
+                <td style="text-align:center">管理密码</td>
+                <td style="text-align:center">维护人</td>
+                <td style="text-align:center">容器</td>
+                <td style="text-align:center">维保日期</td>
+
+                <td style="text-align:center" >操作</td>
+            </tr>
+
+            {% for topic in topics %}
+
+
+                <tr>
+                    <td style="text-align:center">{{ topic.id }}</td>
+                    <td style="text-align:center">{{ topic.cabinet_name }}</td>
+                    <td style="text-align:center">{{ topic.place_text }}</td>
+                    <td style="text-align:center">{{ topic.model_text }}</td>
+                    <td style="text-align:center">{{ topic.vender_text }}</td>
+                    <td style="text-align:center">{{ topic.sn_text }}</td>
+                    <td style="text-align:center">{{ topic.ip_text }}</td>
+                    <td style="text-align:center">{{ topic.user_text }}</td>
+                    <td style="text-align:center">{{ topic.pass_text }}</td>
+                    <td style="text-align:center">{{ topic.app_text }}</td>
+                    <td style="text-align:center">{{ topic.order_text }}</td>
+                    <td style="text-align:center">{{ topic.mana_ip }}</td>
+                    <td style="text-align:center">{{ topic.mana_user }}</td>
+                    <td style="text-align:center">{{ topic.mana_pass }}</td>
+                    <td style="text-align:center">{{ topic.people_name }}</td>
+                    <td style="text-align:center">{{ topic.container_name }}</td>
+                    <td style="text-align:center">{{ topic.ma_date| date:"Y-m-d" }}</td>
+                    {#                    <td style="text-align:center"><a href="{% url 'yto_cmdb:edit_item' topic.id %}"#}
+                    {#                                                     class="btn-sm btn-info">修改</a></td>#}
+                    <td style="text-align:center"><a href="{% url 'yto_cmdb:server_edit' topic.id %}"><span
+                            class="glyphicon glyphicon-edit"></span>修改</a>&nbsp;
+                    <a href="javascript:if(confirm('确实要删除吗?'))location='{% url "yto_cmdb:server_delete" topic.id %}'"><span
+                            class="glyphicon glyphicon-remove"></span>删除</a></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if topics.has_previous %}
+                {% if keyword %}
+                    <li>
+                        <a href="?keyword={{ keyword }}&page={{ topics.previous_page_number }}"
+                           aria-label="Previous"><span
+                                aria-hidden="true">&laquo;</span></a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="?page={{ topics.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+            {#            {% for pg in topics.paginator.page_range %}#}
+            {#                {% circle_page topics.number pg %}#}
+            {#                                {% if topics.number == pg %}#}
+            {#                                    <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>#}
+            {#                                {% else %}#}
+            {#                <li><a href="?page={{ pg }}">{{ pg }}</a></li>#}
+            {#                                {% endif %}#}
+            {#            {% endfor %}#}
+            {% if topics.number %}
+                <li><span aria-hidden="true">{{ topics.number }}/{{ topics.paginator.num_pages }}</span></li>
+                {#            <li><span aria-hidden="true">{{ nums }}条记录</span></li>#}
+            {% endif %}
+
+
+            {% if topics.has_next %}
+                {% if keyword %}
+                    <li>
+                        <a href="?keyword={{ keyword }}&page={{ topics.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="?page={{ topics.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+        </ul>
+    </nav>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>资产管理</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar"></button>
+            <a class="navbar-brand" href="{% url 'yto_cmdb:index' %}">数据中心</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        机房
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'yto_cmdb:idc_items' %}">机房管理</a></li>
+                        <li><a href="{% url 'yto_cmdb:cabinet_items' %}">机柜管理</a></li>
+                        <li><a href="{% url 'yto_cmdb:people_items' %}">人员管理</a></li>
+
+                    </ul>
+                </li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        物理机
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'yto_cmdb:server_items' %}">服务器管理</a></li>
+                        <li><a href="{% url 'yto_cmdb:container_items' %}">容器管理</a></li>
+                    </ul>
+                </li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        虚拟机
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'yto_cmdb:vm_cluster_items' %}">虚拟机集群</a></li>
+                        <li><a href="{% url 'yto_cmdb:vm_items' %}">虚拟机清单</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        其他
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="http://10.1.194.64/zabbix/" target="_blank">Zabbix</a></li>
+                    </ul>
+                </li>
+            </ul>
+            {#            <ul class="nav navbar-nav navbar-right">#}
+            <ul class="nav navbar-nav navbar-right ">
+                {% if user.is_authenticated %}
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            您好, {{ user.username }}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'users:change_pass' %}">修改密码</a></li>
+                            <li><a href="{% url 'users:logout' %}">注销</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'users:register' %}">注册</a></li>
+                    <li><a href="{% url 'users:login' %}">登陆</a></li> {% endif %}
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        {% block header %}{% endblock header %}
+    </div>
+    <div>
+        {% block content %}{% endblock content %}
+    </div>
+    <div class="footer" align="center">
+        2017 数据中心<br>
+        版权木有，侵权不究！
+    </div>
+</div> <!-- /container -->
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+{% extends "yto_cmdb/base.html" %}
+{% load bootstrap3 %}
+
+{% block header %}
+    <h3>虚拟机清单</h3>
+        <style type="text/css">
+        td {
+            white-space: nowrap;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+
+    <form method="get" action="{% url 'yto_cmdb:vm_search' %}" class="form-inline">
+        {#        {% csrf_token %}#}
+        <div class="form-group">
+            <input value="新增虚拟机" type="button" class="btn btn-primary"
+                   onclick="location.href='{% url "yto_cmdb:vm_new" %}'"/>
+        </div>
+        <div class="form-group-sm" style="float: right">
+            <input type="text" name="keyword" class="form-control" placeholder="搜索" required>
+        </div>
+
+
+    </form>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-responsive ">
+            <tr>
+                <td style="text-align:center">ID</td>
+                <td style="text-align:center">集群</td>
+                <td style="text-align:center">IP</td>
+                <td style="text-align:center">应用</td>
+                <td style="text-align:center">负责人</td>
+                <td style="text-align:center">OS</td>
+                <td style="text-align:center">资源池</td>
+                <td style="text-align:center">用户名</td>
+                <td style="text-align:center">密码</td>
+                <td style="text-align:center">CPU</td>
+                <td style="text-align:center">MEM</td>
+                <td style="text-align:center">DISK</td>
+                <td style="text-align:center">建立时间</td>
+                <td style="text-align:center">操作</td>
+            </tr>
+
+            {% for topic in topics %}
+
+
+                <tr>
+                    <td style="text-align:center">{{ topic.id }}</td>
+                    <td style="text-align:center">{{ topic.vm_cluster_name }}</td>
+                    <td style="text-align:center">{{ topic.ip_text }}</td>
+                    <td style="text-align:center">{{ topic.app_text }}</td>
+                    <td style="text-align:center">{{ topic.order_text }}</td>
+                    <td style="text-align:center">{{ topic.os_text }}</td>
+                    <td style="text-align:center">{{ topic.pool_text }}</td>
+                    <td style="text-align:center">{{ topic.user_text }}</td>
+                    <td style="text-align:center">{{ topic.pass_text }}</td>
+                    <td style="text-align:center">{{ topic.cpu_text }}</td>
+                    <td style="text-align:center">{{ topic.mem_text }}</td>
+                    <td style="text-align:center">{{ topic.disk_text }}</td>
+                    <td style="text-align:center">{{ topic.date_added | date:'Y-m-d' }}</td>
+                    <td style="text-align:center"><a href="{% url 'yto_cmdb:vm_edit' topic.id %}"><span
+                            class="glyphicon glyphicon-edit"></span>修改</a>&nbsp;
+{#                    <td style="text-align:center"><a href="{% url 'yto_cmdb:idc_delete' topic.id %}"><span#}
+{#                            class="glyphicon glyphicon-remove"></span></a></td>#}
+                <a href="javascript:if(confirm('确实要删除吗?'))location= '{% url "yto_cmdb:vm_delete" topic.id %}'"><span
+                            class="glyphicon glyphicon-remove"></span>删除</a></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if topics.has_previous %}
+                {% if keyword %}
+                    <li>
+                        <a href="?keyword={{ keyword }}&page={{ topics.previous_page_number }}"
+                           aria-label="Previous"><span
+                                aria-hidden="true">&laquo;</span></a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="?page={{ topics.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+            {% if topics.number %}
+                <li><span aria-hidden="true">{{ topics.number }}/{{ topics.paginator.num_pages }}</span></li>
+                {#            <li><span aria-hidden="true">{{ nums }}条记录</span></li>#}
+            {% endif %}
+
+
+            {% if topics.has_next %}
+                {% if keyword %}
+                    <li>
+                        <a href="?keyword={{ keyword }}&page={{ topics.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="?page={{ topics.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+        </ul>
+    </nav>
+{% endblock %}
